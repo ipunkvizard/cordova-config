@@ -113,6 +113,58 @@ module.exports = (function () {
 	};
 
 	/**
+	 * Adds iOS query scheme in the config.xml file.
+	 *
+	 * @param {string}	schemeName	Scheme name
+	 */
+	Config.prototype.addIOSQueryScheme = function (schemeName) {
+		// find the platform (ios)
+		var platform = this._doc.find('./platform/[@name="ios"]');
+
+		if (!platform) {
+			// If no platform (ios) exists, create one
+			platform = new et.Element('platform');
+
+			platform.attrib = {};
+			platform.set('name', 'ios');
+
+			// Add the platform to the root
+			this._root.append(platform);
+		}
+
+		var configFile = platform.find('./config-file/[@parent="LSApplicationQueriesSchemes"]');
+
+		if (!configFile) {
+			// If no config-file (LSApplicationQueriesSchemes) exists, create one
+			configFile = new et.Element('config-file');
+
+			configFile.attrib = {};
+			configFile.set('parent', 'LSApplicationQueriesSchemes');
+			configFile.set('target', '*-Info.plist');
+
+			// Add the config-file to the platform (ios)
+			platform.append(configFile);
+		}
+
+		var array = configFile.find('./array');
+
+		if (!array) {
+			// If no array exists, create one
+			array = new et.Element('array');
+
+			// Add the array to the config-file (LSApplicationQueriesSchemes)
+			configFile.append(array);
+		}
+
+		// Prepare scheme
+		var scheme = new et.Element('string');
+		scheme.text = schemeName;
+
+		// Add the scheme to the array
+		array.append(scheme);
+	};
+
+	/**
 	 * Sets a plugin variable value in the config.xml file.
 	 *
 	 * @param {string}	pluginName		Plugin name
