@@ -165,6 +165,60 @@ module.exports = (function () {
 	};
 
 	/**
+	 * Adds Android query package in the config.xml file.
+	 *
+	 * @param {string}	packageName	Package name
+	 */
+	Config.prototype.addAndroidQueryPackage = function (packageName) {
+		// find the platform (android)
+		var platform = this._doc.find('./platform/[@name="android"]');
+
+		if (!platform) {
+			// If no platform (android) exists, create one
+			platform = new et.Element('platform');
+
+			platform.attrib = {};
+			platform.set('name', 'android');
+
+			// Add the platform to the root
+			this._root.append(platform);
+		}
+
+		var configFile = platform.find('./config-file/[@parent="/*"]');
+
+		if (!configFile) {
+			// If no config-file (/*) exists, create one
+			configFile = new et.Element('config-file');
+
+			configFile.attrib = {};
+			configFile.set('parent', '/*');
+			configFile.set('target', 'AndroidManifest.xml');
+
+			// Add the config-file to the platform (android)
+			platform.append(configFile);
+		}
+
+		var queries = configFile.find('./queries');
+
+		if (!queries) {
+			// If no queries exists, create one
+			queries = new et.Element('queries');
+
+			// Add the queries to the config-file (/*)
+			configFile.append(queries);
+		}
+
+		// Prepare package
+		var package = new et.Element('package');
+		
+		package.attrib = {};
+		package.set('android:name', packageName);
+
+		// Add the package to the queries
+		queries.append(package);
+	};
+
+	/**
 	 * Sets a plugin variable value in the config.xml file.
 	 *
 	 * @param {string}	pluginName		Plugin name
