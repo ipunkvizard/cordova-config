@@ -1,6 +1,6 @@
 {
   "name": "cordova-config-next",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Parse and edit the config.xml file of a cordova project",
   "license": "MIT",
   "repository": {
