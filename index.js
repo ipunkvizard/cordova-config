@@ -211,13 +211,13 @@ module.exports = (function () {
 		}
 
 		// Prepare package
-		var package = new et.Element('package');
+		var pkg = new et.Element('package');
 
-		package.attrib = {};
-		package.set('android:name', packageName);
+		pkg.attrib = {};
+		pkg.set('android:name', packageName);
 
 		// Add the package to the queries
-		queries.append(package);
+		queries.append(pkg);
 	};
 
 	/**
