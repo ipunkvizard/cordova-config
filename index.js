@@ -115,6 +115,150 @@ module.exports = (function () {
 	};
 
 	/**
+	 * Adds iOS query scheme in the config.xml file.
+	 *
+	 * @param {string}	schemeName	Scheme name
+	 */
+	Config.prototype.addIOSQueryScheme = function (schemeName) {
+		// find the platform (ios)
+		var platform = this._doc.find('./platform/[@name="ios"]');
+
+		if (!platform) {
+			// If no platform (ios) exists, create one
+			platform = new et.Element('platform');
+
+			platform.attrib = {};
+			platform.set('name', 'ios');
+
+			// Add the platform to the root
+			this._root.append(platform);
+		}
+
+		var configFile = platform.find('./config-file/[@parent="LSApplicationQueriesSchemes"]');
+
+		if (!configFile) {
+			// If no config-file (LSApplicationQueriesSchemes) exists, create one
+			configFile = new et.Element('config-file');
+
+			configFile.attrib = {};
+			configFile.set('parent', 'LSApplicationQueriesSchemes');
+			configFile.set('target', '*-Info.plist');
+
+			// Add the config-file to the platform (ios)
+			platform.append(configFile);
+		}
+
+		var array = configFile.find('./array');
+
+		if (!array) {
+			// If no array exists, create one
+			array = new et.Element('array');
+
+			// Add the array to the config-file (LSApplicationQueriesSchemes)
+			configFile.append(array);
+		}
+
+		// Prepare scheme
+		var scheme = new et.Element('string');
+		scheme.text = schemeName;
+
+		// Add the scheme to the array
+		array.append(scheme);
+	};
+
+	/**
+	 * Adds Android query package in the config.xml file.
+	 *
+	 * @param {string}	packageName	Package name
+	 */
+	Config.prototype.addAndroidQueryPackage = function (packageName) {
+		// find the platform (android)
+		var platform = this._doc.find('./platform/[@name="android"]');
+
+		if (!platform) {
+			// If no platform (android) exists, create one
+			platform = new et.Element('platform');
+
+			platform.attrib = {};
+			platform.set('name', 'android');
+
+			// Add the platform to the root
+			this._root.append(platform);
+		}
+
+		var configFile = platform.find('./config-file/[@parent="/*"]');
+
+		if (!configFile) {
+			// If no config-file (/*) exists, create one
+			configFile = new et.Element('config-file');
+
+			configFile.attrib = {};
+			configFile.set('parent', '/*');
+			configFile.set('target', 'AndroidManifest.xml');
+
+			// Add the config-file to the platform (android)
+			platform.append(configFile);
+		}
+
+		var queries = configFile.find('./queries');
+
+		if (!queries) {
+			// If no queries exists, create one
+			queries = new et.Element('queries');
+
+			// Add the queries to the config-file (/*)
+			configFile.append(queries);
+		}
+
+		// Prepare package
+		var package = new et.Element('package');
+
+		package.attrib = {};
+		package.set('android:name', packageName);
+
+		// Add the package to the queries
+		queries.append(package);
+	};
+
+	/**
+	 * Sets a plugin variable value in the config.xml file.
+	 *
+	 * @param {string}	pluginName		Plugin name
+	 * @param {string}	variableName		Variable name
+	 * @param {object}	variableValue		Variable value
+	 */
+	Config.prototype.setPluginVariable = function (pluginName, variableName, variableValue) {
+		// find the plugin
+		var plugin = this._doc.find('./plugin/[@name="' + pluginName + '"]');
+
+		if (!plugin) {
+			// If no plugin exists, create one
+			plugin = new et.Element('plugin');
+
+			plugin.attrib = {};
+			plugin.set('name', pluginName);
+
+			// Add the plugin to the root
+			this._root.append(plugin);
+		}
+
+		var variable = plugin.find('./variable/[@name="' + variableName + '"]');
+
+		if (!variable) {
+			// If no variable exists, create one
+			variable = new et.Element('variable');
+
+			variable.attrib = {};
+			variable.set('name', variableName);
+
+			// Add the variable to the plugin
+			plugin.append(variable);
+		}
+
+		variable.set('value', variableValue);
+	};
+
+	/**
 	 * Sets the description tag of the config.xml file.
 	 *
 	 * @param {string}	description	The description of the config.xml description tag.
@@ -354,14 +498,14 @@ module.exports = (function () {
 	 * @returns {Promise}			A promise that resolves when the file is written.
 	 */
 	Config.prototype.write = function () {
-		return pify(fs.writeFile, Promise)(this._file, this._doc.write({indent: 4}), 'utf8');
+		return pify(fs.writeFile, Promise)(this._file, this._doc.write({ indent: 4 }), 'utf8');
 	};
 
 	/**
 	 * The same as `write` but sync.
 	 */
 	Config.prototype.writeSync = function () {
-		fs.writeFileSync(this._file, this._doc.write({indent: 4}), 'utf-8');
+		fs.writeFileSync(this._file, this._doc.write({ indent: 4 }), 'utf-8');
 	};
 
 	return Config;
