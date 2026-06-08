@@ -9,6 +9,7 @@
     "email": "sam.verschueren@gmail.com"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "engines": {
     "node": ">=0.10"
   },
@@ -17,7 +18,8 @@
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "keywords": [
     "cordova",
