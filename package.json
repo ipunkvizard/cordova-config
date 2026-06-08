@@ -1,12 +1,11 @@
 {
-  "name": "cordova-config",
-  "version": "0.7.0",
+  "name": "cordova-config-next",
+  "version": "1.0.0",
   "description": "Parse and edit the config.xml file of a cordova project",
   "license": "MIT",
-  "repository": "SamVerschueren/cordova-config",
-  "author": {
-    "name": "Sam Verschueren",
-    "email": "sam.verschueren@gmail.com"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ipunkvizard/cordova-config"
   },
   "main": "index.js",
   "types": "index.d.ts",

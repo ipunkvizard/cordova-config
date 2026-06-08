@@ -1,7 +1,6 @@
-# cordova-config
+# cordova-config-next <br> [![npm version](https://badge.fury.io/js/cordova-config-next.svg)](http://badge.fury.io/js/cordova-config-next)
 
-[![Build Status](https://travis-ci.org/SamVerschueren/cordova-config.svg?branch=master)](https://travis-ci.org/SamVerschueren/cordova-config)
-[![Coverage Status](https://coveralls.io/repos/SamVerschueren/cordova-config/badge.svg?branch=master&service=github)](https://coveralls.io/github/SamVerschueren/cordova-config?branch=master)
+This is a fork of the [cordova-config](https://github.com/SamVerschueren/cordova-config) by [Sam Verschueren](https://github.com/SamVerschueren), which will continue supporting this plugin for the community.
 
 > Parse and edit the config.xml file of a cordova project.
 
